@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Accommodation {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  minPrice       Float
+  address    String
+  city       String
+  country    String
+  rate       Float
+  maxGuests  Int
+  availability Boolean
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  rooms     Room[]
+  category Category @relation("Category", fields: [categoryId], references: [id])
+  categoryId Int
+  features AccommodationFeature[]
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  availability Boolean
+  floor      Int
+  capacity  Int
+  accommodation Accommodation @relation(fields: [accommodationId], references: [id])
+  accommodationId Int
+  images     Image[]
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  icon String
+  accommodations Accommodation[] @relation("Category")
+}
+
+model Feature {
+  id Int @id @default(autoincrement())
+  name String
+  icon String
+  accomodations AccommodationFeature[]
+}
+
+model Image {
+  id Int @id @default(autoincrement())
+  url String
+  room Room @relation(fields: [roomId], references: [id])
+  roomId Int
+}
+
+model AccommodationFeature {
+  accommodationId Int
+  featureId Int
+
+  accommodation Accommodation @relation(fields: [accommodationId], references: [id])
+  feature Feature @relation(fields: [featureId], references: [id])
+
+  @@id([accommodationId, featureId])
+}
