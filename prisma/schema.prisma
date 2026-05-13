@@ -4,8 +4,7 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -29,6 +28,7 @@ model Accommodation {
   category Category @relation("Category", fields: [categoryId], references: [id])
   categoryId Int
   features AccommodationFeature[]
+  images    Image[]
 }
 
 model Room {
@@ -61,8 +61,10 @@ model Feature {
 model Image {
   id Int @id @default(autoincrement())
   url String
-  room Room @relation(fields: [roomId], references: [id])
-  roomId Int
+  room Room? @relation(fields: [roomId], references: [id])
+  roomId Int?
+  accommodation Accommodation? @relation(fields: [accommodationId], references: [id])
+  accommodationId Int?
 }
 
 model AccommodationFeature {
