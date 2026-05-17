@@ -21,7 +21,8 @@ model Accommodation {
   country    String
   rate       Float
   maxGuests  Int
-  availability Boolean
+  latitude Float?
+  longitude Float?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   rooms     Room[]
@@ -36,12 +37,12 @@ model Room {
   name        String
   description String
   price       Float
-  availability Boolean
   floor      Int
   capacity  Int
   accommodation Accommodation @relation(fields: [accommodationId], references: [id])
   accommodationId Int
   images     Image[]
+  features   RoomFeature[]
 }
 
 model Category {
@@ -56,6 +57,7 @@ model Feature {
   name String
   icon String
   accomodations AccommodationFeature[]
+  rooms RoomFeature[]
 }
 
 model Image {
@@ -75,4 +77,14 @@ model AccommodationFeature {
   feature Feature @relation(fields: [featureId], references: [id])
 
   @@id([accommodationId, featureId])
+}
+
+model RoomFeature {
+  roomId Int
+  featureId Int
+
+  room Room @relation(fields: [roomId], references: [id])
+  feature Feature @relation(fields: [featureId], references: [id])
+
+  @@id([roomId, featureId])
 }

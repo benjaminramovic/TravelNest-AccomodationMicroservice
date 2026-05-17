@@ -26,7 +26,8 @@ export const getAllAccommodations = async (req, res) => {
         country: accommodation.country,
         rate: accommodation.rate,
         maxGuests: accommodation.maxGuests,
-        availability: accommodation.availability,
+        latitude: accommodation.latitude,
+        longitude: accommodation.longitude,
         category: accommodation.category.name,
         features: accommodation.features.map(af => af.feature.name)
     }));
@@ -55,7 +56,7 @@ export const getAccommodationById = async (req, res) => {
 };
 
 export const createAccommodation = async (req, res) => {
-  const { name, description, minPrice, address, city, country, rate, maxGuests, availability, categoryId, featureIds } = req.body;
+  const { name, description, minPrice, address, city, country, rate, maxGuests, latitude, longitude, categoryId, featureIds } = req.body;
   try {
     //upload images
     const uploadedImages = await Promise.all(
@@ -81,7 +82,8 @@ export const createAccommodation = async (req, res) => {
         country, 
         rate: parseFloat(rate), 
         maxGuests: parseInt(maxGuests), 
-        availability: Boolean(availability), 
+        latitude: parseFloat(latitude), 
+        longitude: parseFloat(longitude), 
         category: {
           connect: {
             id: parseInt(categoryId)

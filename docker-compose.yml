@@ -1,0 +1,30 @@
+services:
+  travelnest-accommodations:
+    image: benjaminramovic02/travelnest-accommodations:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - .env
+    ports:
+      - 5001:5001
+    depends_on:
+      - postgres
+    networks:
+      - travelnest
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: travelnest
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./plugins:/plugins
+    networks:
+      - travelnest
+  
+

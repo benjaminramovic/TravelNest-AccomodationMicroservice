@@ -6,6 +6,7 @@ import cors from 'cors'
 import accommodationRouter from './routes/accommodationRoutes.js'
 import categoryRouter from './routes/categoryRoutes.js'
 import featureRouter from './routes/featureRoute.js'
+import roomRouter from './routes/roomRoute.js'
 
 const app = express()
 const port = process.env.PORT || 5001
@@ -26,6 +27,7 @@ app.use(cors())
 app.use('/api/accommodations',accommodationRouter);
 app.use('/api/categories',categoryRouter);
 app.use('/api/features',featureRouter);
+app.use('/api/rooms',roomRouter);
 
 app.get('/', (req, res) => {
   res.send('Welcome to the TravelNest Accommodations API!')
